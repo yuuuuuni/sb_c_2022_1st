@@ -36,6 +36,12 @@ public class UsrHomeController {
 		return count++; // 후위연산자. count 값을 먼저 리턴하고 뒤늦게 1증가
 	}
 	
+	@RequestMapping("/usr/home/main5")
+	@ResponseBody
+	public String showMain5() {
+		count = 0;
+		return "count의 값이 0으로 초기화 되었습니다.";
+	}
 }
 
 /*
