@@ -23,25 +23,28 @@ public class UsrArticleController {
 	
 	private void makeTestData() { // 테스트 게시물 생성
 		for(int i = 1; i <= 10; i++) {
-			int id = articlesLastId + 1;
 			String title = "제목" + i;
 			String body = "내용" + i;
-			Article article = new Article(id, title, body);
 			
-			articles.add(article);
-			articlesLastId = id;
+			writeArticle(title, body);
 		}
+	}
+	
+	public Article writeArticle(String title, String body) {
+		int id = articlesLastId + 1;
+		Article article = new Article(id, title, body); // 게시물 객체 생성
+		
+		articles.add(article);
+		articlesLastId = id;
+		
+		return article;
 		
 	}
 
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		int id = articlesLastId + 1;
-		Article article = new Article(id, title, body); // 게시물 객체 생성
-		
-		articles.add(article);
-		articlesLastId = id;
+		Article article = writeArticle(title, body);
 		
 		return article; // 만들어진 새 게시물이 화면에 보여져라
 	}
