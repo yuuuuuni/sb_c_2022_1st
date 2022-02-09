@@ -3,15 +3,19 @@ package com.pyh.exam.demo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.pyh.exam.demo.service.ArticleService;
 import com.pyh.exam.demo.vo.Article;
 
 @Controller
 public class UsrArticleController {
 	// 인스턴스 변수 시작
+	@Autowired // 컴포넌트로 등록된 클래스(@Service, @Repository을 붙인 클래스)들은 new 쓰지 않고 @Autowired를 붙여 객체를 생성함
+	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 @Autowired를 붙여 ArticleService객체 생성 
 	private int articlesLastId;
 	private List<Article> articles; // 게시물을 계속 추가해야 하므로 게시물들을 담을 어레이리스트 사용, 이 때 articles라는 변수 먼저 선언
 	// 인스턴스 변수 끝
