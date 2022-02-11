@@ -1,5 +1,6 @@
 package com.pyh.exam.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,9 @@ import com.pyh.exam.demo.vo.Article;
 @Controller
 public class UsrArticleController {
 	@Autowired // 컴포넌트로 등록된 클래스(@Service, @Repository을 붙인 클래스)들은 new 쓰지 않고 @Autowired를 붙여 객체를 생성함
-	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 @Autowired를 붙여 ArticleService객체 생성 
+	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 @Autowired를 붙여 ArticleService객체 생성
 
 	
-
 	// 액션 메서드 시작
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
@@ -29,7 +29,7 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
 	public List<Article> getArticles() {
-		return articleService.getArticles(); // 원래는 articles를 리턴해줬지만, 어레이리스트 articles가 Service단으로 이동했으므로 서비스단에 있는 것을 호출한다는 의미의 articleService.을 해주고 서비스 클래스에 있는 어레이리스트의 articles를 호출해야하므로 메소드를 생성한 것임!  
+		return articleService.getArticles(); // articles라는 어레이리스트를 화면에 보여줘라.(즉, 게시물들을 보여줘라)
 	}
 
 	@RequestMapping("/usr/article/doDelete")
