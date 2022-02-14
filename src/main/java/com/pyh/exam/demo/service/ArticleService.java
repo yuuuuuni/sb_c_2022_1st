@@ -16,7 +16,6 @@ public class ArticleService {
 	// 생성자
 	public ArticleService(ArticleRepository articleRepository) { // ArticleRepository 객체를 주입식으로 투입
 		this.articleRepository = articleRepository;
-		articleRepository.makeTestData();
 	}
 
 	public Article writeArticle(String title, String body) {
