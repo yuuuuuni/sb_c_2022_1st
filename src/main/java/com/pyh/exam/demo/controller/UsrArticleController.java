@@ -21,7 +21,9 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		Article article = articleService.writeArticle(title, body);
+		int id = articleService.writeArticle(title, body);
+		
+		Article article = articleService.getArticle(id);
 
 		return article; // 만들어진 새 게시물이 화면에 보여져라
 	}
@@ -62,7 +64,7 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticleAction(int id) { // 메소드의 리턴타입을 Object로 지정해줌으로써 리턴을 String과 Article 타입이 가능하도록 함
+	public Object getArticle(int id) { // 메소드의 리턴타입을 Object로 지정해줌으로써 리턴을 String과 Article 타입이 가능하도록 함
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
