@@ -19,8 +19,8 @@ public class ArticleService {
 	}
 
 	public int writeArticle(String title, String body) {
-		articleRepository.writeArticle(title, body);
-		return articleRepository.getLastInsertId();
+		articleRepository.writeArticle(title, body); // 게시물을 추가하는 메소드를 먼저 호출한 후,
+		return articleRepository.getLastInsertId(); // 가장 마지막에 추가된 게시물의 id를 구하는 메서드 호출 후 리턴
 	}
 
 	public List<Article> getArticles() {

@@ -21,9 +21,9 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		int id = articleService.writeArticle(title, body);
+		int id = articleService.writeArticle(title, body); // id에는 게시물이 추가된 후, 가장 마지막에 추가된 게시물의 번호가 담겨짐
 		
-		Article article = articleService.getArticle(id);
+		Article article = articleService.getArticle(id); // 그 번호에 해당하는 게시물을 꺼내 article에 담아라
 
 		return article; // 만들어진 새 게시물이 화면에 보여져라
 	}
