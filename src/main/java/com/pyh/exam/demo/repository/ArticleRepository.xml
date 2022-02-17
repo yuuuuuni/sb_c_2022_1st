@@ -10,7 +10,7 @@
 		`body` = #{body}
 	</insert>
 	
-	<select id="getArticle" resultType="Article">
+	<select id="getArticle" resultType="Article"> <!-- resultType에 리턴타입 적어주기 -->
 		SELECT *
 		FROM article
 		WHERE id = #{id}
