@@ -26,7 +26,7 @@
 		<set>
 			updateDate = NOW(),
 			<if test="title != null and title != ''"> <!-- title이 null이 아니고, 공백이 아니면 -->
-				title = #{title}, <!-- title에 입력값이 들어와라 -->
+				title = #{title}, <!-- title에 값이 들어와라 -->
 			</if>
 			<if test="body != null and body != ''">
 				`body` = #{body}
