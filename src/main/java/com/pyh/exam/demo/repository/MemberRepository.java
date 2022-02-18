@@ -24,7 +24,7 @@ public interface MemberRepository {
 
 	@Select("SELECT LAST_INSERT_ID()")
 	int getLastInsertId();
-
+	
 	@Select("""
 			SELECT *
 			FROM `member` AS M
