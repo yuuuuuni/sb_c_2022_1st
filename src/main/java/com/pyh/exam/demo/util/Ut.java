@@ -18,4 +18,8 @@ public class Ut {
 		return str.trim().length() == 0; // str의 공백을 제거한 길이가 0과 같다면 true 리턴, 아니라면 false 리턴
 	}
 
+	public static String f(String format, Object... args) {
+		return String.format(format, args);
+	}
+
 }
