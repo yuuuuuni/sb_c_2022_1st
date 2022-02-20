@@ -12,14 +12,26 @@ public class MemberService {
 	private MemberRepository memberRepository;
 
 	public int join(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
+		// 로그인아이디 중복체크
 		Member oldMember = getMemberByLoginId(loginId); // 브라우저에서 입력된 loginId를 db에서 찾아서 oldMember에 담아라
 		
 		if(oldMember != null) { // oldMember에 값이 있으면(즉, 브라우저에서 입력된 loginId가 db에서 찾아지면)
 			return -1;
 		}
 		
+		// 이름+이메일 중복체크
+		oldMember = getMemberByNameAndEmail(name, email);
+		
+		if(oldMember != null) {
+			return -2;
+		}
+		
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNo, email); // 회원 계정을 생성하는 메소드 먼저 호출한 후,
 		return memberRepository.getLastInsertId(); // 가장 마지막에 생성된 회원의 id를 구하는 메서드 호출 후 그 값 리턴
+	}
+
+	private Member getMemberByNameAndEmail(String name, String email) {
+		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
 
 	private Member getMemberByLoginId(String loginId) {
