@@ -14,6 +14,11 @@ public class ResultData {
 		
 	}
 	
+	// 메소드 오버로딩 법칙 사용(data1이 안들어오는 경우)
+	public static ResultData from(String resultCode, String msg) {
+		return from(resultCode, msg, null); // 그 자리에 null로 리턴
+	}
+	
 	// 메소드(리턴타입: ResultData, 메소드명: from)
 	public static ResultData from(String resultCode, String msg, Object data1) {
 		ResultData rd = new ResultData();

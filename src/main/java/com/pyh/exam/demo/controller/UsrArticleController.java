@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pyh.exam.demo.service.ArticleService;
+import com.pyh.exam.demo.util.Ut;
 import com.pyh.exam.demo.vo.Article;
+import com.pyh.exam.demo.vo.ResultData;
 
 @Controller
 public class UsrArticleController {
@@ -64,14 +66,14 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticle(int id) { // 메소드의 리턴타입을 Object로 지정해줌으로써 리턴을 String과 Article 타입이 가능하도록 함
+	public ResultData getArticle(int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
-			return id + "번 게시물이 존재하지 않습니다.";
+			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
 
-		return article;
+		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), article);
 	}
 
 }
