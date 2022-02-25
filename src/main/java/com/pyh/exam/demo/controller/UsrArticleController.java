@@ -31,12 +31,12 @@ public class UsrArticleController {
 			return ResultData.from("F-2", "내용을 입력해주세요.");
 		}
 		
-		ResultData writeArticleRd = articleService.writeArticle(title, body); // writeArticleRd에는 게시물이 추가된 후, ResultData 타입에 따라 result코드, 메세지, 데이터가 담겨짐
-		int id = (int)writeArticleRd.getData1(); // writeArticleRd의 Data1을 int로 형변환. why? Data1의 타입은 Object이며 이 안에는 추가된 게시물의 마지막 번호(id)가 들어있으므로
+		ResultData writeArticleRd = articleService.writeArticle(title, body); // writeArticleRd에는 ResultData 타입의 추가된 게시물의 result코드, 메세지, 데이터가 담겨짐
+		int id = (int)writeArticleRd.getData1(); // writeArticleRd의 Data1을 int로 형변환. why? Data1의 타입은 Object이며 이 안에는 추가된 게시물의 마지막 번호(id)가 들어있으므로 추가된 게시물의 번호를 뽑기 위해 id에 담아줌
 		
 		Article article = articleService.getArticle(id); // 마지막에 추가된 게시물의 번호에 해당하는 게시물을 꺼내 article에 담아라
 
-		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(), article); //
+		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(), article); // writeArticleRd에는 추가된 게시물(result코드, 메세지, 데이터)이 담겨져있으므로 get으로 하나씩 차례로 뽑아준 후 리턴
 	}
 
 	@RequestMapping("/usr/article/getArticles")
