@@ -37,4 +37,9 @@ public class ResultData {
 	public boolean isFail() {
 		return isSuccess() == false; // isSuccess() 메소드가 false이면 true 리턴. 아니면 false 리턴
 	}
+
+	public static ResultData newData(ResultData joinRd, Object newData) {
+		return from(joinRd.getResultCode(), joinRd.getMsg(), newData);
+	}
+
 }
