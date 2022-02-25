@@ -18,7 +18,7 @@ public class ArticleService {
 		this.articleRepository = articleRepository;
 	}
 
-	public ResultData writeArticle(String title, String body) {
+	public ResultData<Integer> writeArticle(String title, String body) {
 		articleRepository.writeArticle(title, body); // 게시물이 추가됨
 		int id = articleRepository.getLastInsertId(); // 마지막에 추가된 게시물의 번호를 선택해서 id에 담음
 		
