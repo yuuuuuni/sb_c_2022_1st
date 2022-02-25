@@ -35,7 +35,7 @@ public class UsrArticleController {
 		
 		Article article = articleService.getArticle(id); // 마지막에 추가된 게시물의 번호에 해당하는 게시물을 꺼내 article에 담아라
 
-		return ResultData.from(writeArticleRd.getResultCode(), writeArticleRd.getMsg(), article); // writeArticleRd에는 추가된 게시물(result코드, 메세지, 데이터)이 담겨져있으므로 get으로 하나씩 차례로 뽑아준 후 리턴
+		return ResultData.newData(writeArticleRd, article); // // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌)
 	}
 
 	@RequestMapping("/usr/article/getArticles")
