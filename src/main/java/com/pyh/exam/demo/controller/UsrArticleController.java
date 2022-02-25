@@ -41,8 +41,11 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/getArticles")
 	@ResponseBody
-	public List<Article> getArticles() {
-		return articleService.getArticles(); // articles라는 어레이리스트를 화면에 보여줘라.(즉, 게시물들을 보여줘라)
+	public ResultData getArticles() { // 리턴타입을 ResultData로 바꾸고
+		List<Article> articles = articleService.getArticles(); // 가져온 게시물들을 어레이리스트 articles라는 변수를 만들어 담아줌
+		
+		return ResultData.from("S-1", "게시물 리스트 입니다.", articles); // ResultData 포맷에 맞게 코드, 메세지, 데이터인 articles를 리턴
+		
 	}
 
 	@RequestMapping("/usr/article/doDelete")
