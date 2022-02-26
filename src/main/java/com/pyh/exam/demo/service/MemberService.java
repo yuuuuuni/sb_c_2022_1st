@@ -13,7 +13,7 @@ public class MemberService {
 	@Autowired
 	private MemberRepository memberRepository;
 
-	public ResultData join(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
+	public ResultData<Integer> join(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
 		// 로그인아이디 중복체크
 		Member oldMember = getMemberByLoginId(loginId); // 브라우저에서 입력된 loginId를 db에서 찾아서 oldMember에 담아라
 		

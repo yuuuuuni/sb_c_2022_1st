@@ -17,7 +17,7 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public ResultData doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
+	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) { // 제너릭을 이용하여 리턴타입을 ResultData 형식이긴 하면서(3개 받는거), 3번째 데이터(Data1)의 타입이 Member인 것만 받게 하도록 변경
 		if(Ut.empty(loginId)) { // loginId가 비어있는지 체크하는 함수
 			return ResultData.from("F-1", "loginId(을)를 입력해주세요.");
 		}
@@ -42,13 +42,13 @@ public class UsrMemberController {
 			return ResultData.from("F-6", "email(을)를 입력해주세요.");
 		}
 		
-		ResultData joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNo, email);
+		ResultData<Integer> joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNo, email); // int로 형변환 할 필요 없이 제너릭을 이용하여 애초에 ResultData의 형식을 <Integer>로 받음
 		
 		if(joinRd.isFail()) { // resultCode가 F-로 시작하면
-			return joinRd; // 값을 그대로 바로 리턴해라
+			return (ResultData)joinRd; // 값을 그대로 바로 리턴해라
 		}
 		
-			int id = (int)joinRd.getData1();
+			int id = joinRd.getData1(); // int로 형변환 하는 것을 없앰
 		
 			Member member = memberService.getMemberById(id);
 			
