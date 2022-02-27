@@ -1,5 +1,7 @@
 package com.pyh.exam.demo.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import com.pyh.exam.demo.vo.ResultData;
 public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
-
+	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) { // 제너릭을 이용하여 리턴타입을 ResultData 형식이긴 하면서(3개 받는거), 3번째 데이터(Data1)의 타입이 Member인 것만 받게 하도록 변경
@@ -53,6 +55,47 @@ public class UsrMemberController {
 			Member member = memberService.getMemberById(id);
 			
 			return ResultData.newData(joinRd, member); // newData 메소드 이용하여 joinRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 member로 넣어줌)
+	}
+	
+	@RequestMapping("/usr/member/doLogin")
+	@ResponseBody
+	public ResultData doLogin(HttpSession httpSession, String loginId, String loginPw) {
+		boolean isLogined = false;
+		
+		if(httpSession.getAttribute("loginedMemberId") != null) { // 이미 로그인 되어있는 상태이면
+			isLogined = true;
+		}
+		
+		if(isLogined) {
+			return ResultData.from("F-5", "이미 로그인되었습니다.");
+		}
+		
+		if(Ut.empty(loginId)) {
+			return ResultData.from("F-1", "loginId(을)를 입력해주세요.");
+		}
+		
+		if(Ut.empty(loginPw)) {
+			return ResultData.from("F-2", "loginPw(을)를 입력해주세요.");
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId); // member에는 db에 있는 정보가 담기는 것임
+		
+		// 브라우저에서 입력된 loginId에 대한 회원 정보가 없는 경우
+		if(member == null) {
+			return ResultData.from("F-3", "존재하지 않는 로그인아이디 입니다.");
+		}
+		
+		// 입력된 loginId에 대한 회원 정보는 있지만 그 값(member)의 비밀번호가 브라우저에서 입력된 비밀번호(loginPw)와 같지 않은 경우
+		if(member.getLoginPw().equals(loginPw) == false) {
+			return ResultData.from("F-4", "비밀번호가 일치하지 않습니다.");
+		}
+		
+		httpSession.setAttribute("loginedMemberId", member.getId()); // member의 id를 가져와 이 값의 이름을 "loginedMemberId" 지정하겠다.
+		
+		// 로그인 성공
+		return ResultData.from("S-1", Ut.f("%s님 환영합니다.", member.getNickname()));
 			
 	}
+	
+	
 }
