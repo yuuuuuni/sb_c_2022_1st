@@ -59,7 +59,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public ResultData doLogin(HttpSession httpSession, String loginId, String loginPw) {
+	public ResultData doLogin(HttpSession httpSession, String loginId, String loginPw) { // HttpSession httpSession을 적어주면 알아서 sessione을 얻어와준다.
 		boolean isLogined = false;
 		
 		if(httpSession.getAttribute("loginedMemberId") != null) { // 이미 로그인 되어있는 상태이면
@@ -90,12 +90,10 @@ public class UsrMemberController {
 			return ResultData.from("F-4", "비밀번호가 일치하지 않습니다.");
 		}
 		
-		httpSession.setAttribute("loginedMemberId", member.getId()); // member의 id를 가져와 이 값의 이름을 "loginedMemberId" 지정하겠다.
+		// 여기서부터는 로그인 성공
 		
-		// 로그인 성공
+		httpSession.setAttribute("loginedMemberId", member.getId()); // 로그인된 회원의 id를 꺼내서 '로그인된 회원의 id'라고 이름을 지정하겠다.
+		
 		return ResultData.from("S-1", Ut.f("%s님 환영합니다.", member.getNickname()));
-			
 	}
-	
-	
 }
