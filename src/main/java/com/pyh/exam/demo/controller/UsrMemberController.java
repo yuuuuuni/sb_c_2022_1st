@@ -67,7 +67,7 @@ public class UsrMemberController {
 		}
 		
 		if(isLogined) {
-			return ResultData.from("F-5", "이미 로그인되었습니다.");
+			return ResultData.from("F-5", "이미 로그인 된 상태입니다.");
 		}
 		
 		if(Ut.empty(loginId)) {
@@ -95,5 +95,24 @@ public class UsrMemberController {
 		httpSession.setAttribute("loginedMemberId", member.getId()); // 로그인된 회원의 id를 꺼내서 '로그인된 회원의 id'라고 이름을 지정하겠다.
 		
 		return ResultData.from("S-1", Ut.f("%s님 환영합니다.", member.getNickname()));
+	}
+	
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession httpSession) {
+		boolean isLogined = false;
+		
+		if(httpSession.getAttribute("loginedMemberId") == null) { // 이미 로그아웃 되어있는 상태이면
+			isLogined = true;
+		}
+		
+		if(isLogined) {
+			return ResultData.from("S-1", "이미 로그아웃 상태입니다.");
+		}
+		
+		
+		httpSession.removeAttribute("loginedMemberId"); // '로그인된 회원의 id'라는 속성을 삭제하겠다.
+		
+		return ResultData.from("S-2", "로그아웃 되었습니다.");
 	}
 }
