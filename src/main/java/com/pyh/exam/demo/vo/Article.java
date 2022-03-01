@@ -11,6 +11,7 @@ public class Article {
 	private int id; // private로 하면 자신만 접근 가능하므로 클래스 위에 @Data를 붙여서 접근 가능하도록 함
 	private String regDate;
 	private String updateDate;
+	private int memberId;
 	private String title;
 	private String body;
 }
