@@ -24,15 +24,15 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public ResultData<Article> doAdd(HttpSession httpSession, String title, String body) {
-		boolean isLogined = false;
-		int loginedMemberId = 0;
+		boolean isLogined = false; // 로그인을 안했다고 가정
+		int loginedMemberId = 0; // 로그인을 안했다고 가정
 		
-		if(httpSession.getAttribute("loginedMemberId") != null) { // 이미 로그인 되어있는 상태이면
-			isLogined = true;
+		if(httpSession.getAttribute("loginedMemberId") != null) { // loginedMemberId 안에 로그인한 회원의 id가 들어있다는 뜻
+			isLogined = true; // 로그인한 상태로 하겠다
 			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
 		}
 		
-		if(isLogined == false) {
+		if(isLogined == false) { // 로그인이 안되어있으면
 			return ResultData.from("F-A", "로그인 후 이용해주세요.");
 		}
 		
@@ -44,7 +44,7 @@ public class UsrArticleController {
 			return ResultData.from("F-2", "body(을)를 입력해주세요.");
 		}
 		
-		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId, title, body); // writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
+		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId, title, body); // 누가 글을 썼는지 알기 위해 loginedMemberId도 추가해줌. writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
 		int id = writeArticleRd.getData1();
 		
 		Article article = articleService.getArticle(id); // 마지막에 추가된 게시물의 번호에 해당하는 게시물을 꺼내 article에 담아라
