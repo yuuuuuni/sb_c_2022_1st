@@ -27,6 +27,7 @@ public class UsrArticleController {
 		boolean isLogined = false; // 로그인을 안했다고 가정
 		int loginedMemberId = 0; // 로그인을 안했다고 가정
 		
+		// 로그인 했는지 체크
 		if(httpSession.getAttribute("loginedMemberId") != null) { // loginedMemberId 안에 로그인한 회원의 id가 들어있다는 뜻
 			isLogined = true; // 로그인한 상태로 하겠다
 			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
@@ -63,8 +64,26 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData<Integer> doDelete(int id) {
+	public ResultData<Integer> doDelete(HttpSession httpSession, int id) {
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		
+		// 로그인 했는지 체크
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
+		}
+		
+		if(isLogined == false) { // 로그인이 안되어있으면
+			return ResultData.from("F-A", "로그인 후 이용해주세요.");
+		}
+		
 		Article article = articleService.getArticle(id);
+		
+		// 글 삭제 시 작성자 권한 체크
+		if(article.getMemberId() != loginedMemberId) { // 삭제하려는 글의 회원번호와 로그인한 회원의 회원번호가 같지 않다면
+			return ResultData.from("F-2", "권한이 없습니다.");
+		}
 
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
