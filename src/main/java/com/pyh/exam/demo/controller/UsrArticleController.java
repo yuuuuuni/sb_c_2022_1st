@@ -68,7 +68,7 @@ public class UsrArticleController {
 		boolean isLogined = false;
 		int loginedMemberId = 0;
 		
-		// 로그인 했는지 체크
+		// 로그인 했는지 체크 여부
 		if(httpSession.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
 			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
@@ -80,11 +80,12 @@ public class UsrArticleController {
 		
 		Article article = articleService.getArticle(id);
 		
-		// 글 삭제 시 작성자 권한 체크
-		if(article.getMemberId() != loginedMemberId) { // 삭제하려는 글의 회원번호와 로그인한 회원의 회원번호가 같지 않다면
+		// 글 작성자의 번호와 로그인한 회원의 번호가 일치하는지 여부
+		if(article.getMemberId() != loginedMemberId) {
 			return ResultData.from("F-2", "권한이 없습니다.");
 		}
-
+		
+		// 가져온 게시물이 비어있는 경우
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
