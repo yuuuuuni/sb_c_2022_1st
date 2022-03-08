@@ -59,7 +59,18 @@ public class UsrArticleController {
 		List<Article> articles = articleService.getArticles(); // 가져온 게시물들을 어레이리스트 articles라는 변수를 만들어 담아줌
 		
 		return ResultData.from("S-1", "게시물 리스트 입니다.", "articles", articles); // ResultData 포맷에 맞게 코드, 메세지, 데이터인 articles를 리턴
-		
+	}
+
+	@RequestMapping("/usr/article/getArticle")
+	@ResponseBody
+	public ResultData<Article> getArticle(int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
+		Article article = articleService.getArticle(id);
+
+		if (article == null) {
+			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
+		}
+
+		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), "article", article);
 	}
 
 	@RequestMapping("/usr/article/doDelete")
@@ -126,18 +137,6 @@ public class UsrArticleController {
 		}
 		
 		return articleService.modifyArticle(id, title, body); // 게시물 수정 메서드를 따로 만듦
-	}
-
-	@RequestMapping("/usr/article/getArticle")
-	@ResponseBody
-	public ResultData<Article> getArticle(int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
-		Article article = articleService.getArticle(id);
-
-		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
-		}
-
-		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), "article", article);
 	}
 	// 액션 메서드 끝
 }
