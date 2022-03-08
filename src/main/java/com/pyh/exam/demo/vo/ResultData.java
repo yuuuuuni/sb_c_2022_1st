@@ -8,6 +8,8 @@ public class ResultData<DT> {
 	@Getter
 	private String msg; // 메세지
 	@Getter
+	private String data1Name; // 데이터네임
+	@Getter
 	private DT data1; // 데이터
 	
 	private ResultData() { // private를 생성자로 하면 외부에서 객체 생성을 못함
@@ -16,14 +18,15 @@ public class ResultData<DT> {
 	
 	// 메소드 오버로딩 법칙 사용(data1이 안들어오는 경우)
 	public static ResultData from(String resultCode, String msg) {
-		return from(resultCode, msg, null); // data1이 없으므로 from 메소드 호출 시 들어가는 매개변수 자리에 맞춰 data1 자리에 null로 채워줘야함
+		return from(resultCode, msg, null, null); // data1이 없으므로 from 메소드 호출 시 들어가는 매개변수 자리에 맞춰 data1 자리에 null로 채워줘야함
 	}
 	
-	public static <DT> ResultData<DT> from(String resultCode, String msg, DT data1) {
+	public static <DT> ResultData<DT> from(String resultCode, String msg, String data1Name, DT data1) {
 	// 메소드(리턴타입: ResultData, 메소드명: from)
 		ResultData<DT> rd = new ResultData<DT>(); // 리턴타입을 ResultData로 하려면 ResultData 객체를 생성해야겠지?
 		rd.resultCode = resultCode;
 		rd.msg = msg;
+		rd.data1Name = data1Name;
 		rd.data1 = data1;
 
 		return rd;
@@ -38,8 +41,8 @@ public class ResultData<DT> {
 		return isSuccess() == false; // isSuccess() 메소드가 false이면 true 리턴. 아니면 false 리턴
 	}
 
-	public static <DT> ResultData<DT> newData(ResultData joinRd, DT newData) {
-		return from(joinRd.getResultCode(), joinRd.getMsg(), newData);
+	public static <DT> ResultData<DT> newData(ResultData oldRd, String data1Name, DT data1) {
+		return from(oldRd.getResultCode(), oldRd.getMsg(), data1Name, data1);
 	}
 
 }

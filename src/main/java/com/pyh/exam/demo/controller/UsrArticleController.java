@@ -50,7 +50,7 @@ public class UsrArticleController {
 		
 		Article article = articleService.getArticle(id); // 마지막에 추가된 게시물의 번호에 해당하는 게시물을 꺼내 article에 담아라
 
-		return ResultData.newData(writeArticleRd, article); // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌
+		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌
 	}
 
 	@RequestMapping("/usr/article/getArticles")
@@ -58,7 +58,7 @@ public class UsrArticleController {
 	public ResultData<List<Article>> getArticles() { // 리턴타입을 ResultData로 바꾸고
 		List<Article> articles = articleService.getArticles(); // 가져온 게시물들을 어레이리스트 articles라는 변수를 만들어 담아줌
 		
-		return ResultData.from("S-1", "게시물 리스트 입니다.", articles); // ResultData 포맷에 맞게 코드, 메세지, 데이터인 articles를 리턴
+		return ResultData.from("S-1", "게시물 리스트 입니다.", "articles", articles); // ResultData 포맷에 맞게 코드, 메세지, 데이터인 articles를 리턴
 		
 	}
 
@@ -87,26 +87,45 @@ public class UsrArticleController {
 		
 		// 글 작성자의 번호와 로그인한 회원의 번호가 일치하는지 여부 (그 다음, 두번째로 확인)
 		if(article.getMemberId() != loginedMemberId) {
-			return ResultData.from("F-2", "권한이 없습니다.");
+			return ResultData.from("F-2", "삭제 권한이 없습니다.");
 		}
 
 		articleService.deleteArticle(id); // 게시물 삭제 메서드를 따로 만듦
 
-		return ResultData.from("S-1", Ut.f("%d번 게시물을 삭제하였습니다.", id), id);
+		return ResultData.from("S-1", Ut.f("%d번 게시물을 삭제하였습니다.", id), "id", id);
 	}
 
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData<Integer> doModify(int id, String title, String body) {
+	public ResultData<Article> doModify(HttpSession httpSession, int id, String title, String body) {		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		
+		// 로그인 했는지 체크 여부
+		if(httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
+		}
+		
+		if(isLogined == false) { // 로그인이 안되어있으면
+			return ResultData.from("F-A", "로그인 후 이용해주세요.");
+		}
+		
 		Article article = articleService.getArticle(id);
-
+		
+		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
-
-		articleService.modifyArticle(id, title, body); // 게시물 수정 메서드를 따로 만듦
-
-		return ResultData.from("S-1", Ut.f("%d번 게시물을 수정하였습니다.", id), id);
+		
+		// 수정 권한을 체크하는 것을 서비스한테 넘김
+		ResultData actorCanModifyRd = articleService.actorCanModify(loginedMemberId, article);
+		
+		if(actorCanModifyRd.isFail()) {
+			return actorCanModifyRd;
+		}
+		
+		return articleService.modifyArticle(id, title, body); // 게시물 수정 메서드를 따로 만듦
 	}
 
 	@RequestMapping("/usr/article/getArticle")
@@ -118,7 +137,7 @@ public class UsrArticleController {
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
 
-		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), article);
+		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), "article", article);
 	}
 	// 액션 메서드 끝
 }

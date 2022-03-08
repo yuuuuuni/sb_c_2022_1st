@@ -22,7 +22,7 @@ public class ArticleService {
 		articleRepository.writeArticle(memberId, title, body); // 게시물이 추가됨
 		int id = articleRepository.getLastInsertId(); // 마지막에 추가된 게시물의 번호를 선택해서 id에 담음
 		
-		return ResultData.from("S-1", Ut.f("%d번 게시물이 생성되었습니다.", id), id); // 리턴타입을 ResultData 형식으로 바꿈
+		return ResultData.from("S-1", Ut.f("%d번 게시물이 생성되었습니다.", id), "id", id); // 리턴타입을 ResultData 형식으로 바꿈
 	}
 
 	public List<Article> getArticles() {
@@ -35,12 +35,26 @@ public class ArticleService {
 
 	public void deleteArticle(int id) {
 		articleRepository.deleteArticle(id);
-		
 	}
 
-	public void modifyArticle(int id, String title, String body) {
+	public ResultData<Article> modifyArticle(int id, String title, String body) {
 		articleRepository.modifyArticle(id, title, body);
 		
+		Article article = getArticle(id);
+		
+		return ResultData.from("S-1", Ut.f("%d번 게시물이 수정되었습니다.", id), "article", article);
+	}
+
+	public ResultData actorCanModify(int actorId, Article article) {
+		if(article == null) {
+			return ResultData.from("F-1", "게시물이 존재하지 않습니다.");
+		}
+		
+		if(article.getMemberId() != actorId) {
+			return ResultData.from("F-2", "수정 권한이 없습니다.");
+		}
+		
+		return ResultData.from("S-1", "게시물 수정 가능합니다.");
 	}
 	
 }

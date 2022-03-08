@@ -31,7 +31,7 @@ public class MemberService {
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNo, email); // 회원 계정을 생성하는 메소드 먼저 호출하여 계정 생성 후,
 		int id = memberRepository.getLastInsertId(); // 가장 마지막에 생성된 회원의 id를 구하는 메서드 호출 후 그 값 리턴
 		
-		return ResultData.from("S-1", "회원가입이 완료되었습니다.", id);
+		return ResultData.from("S-1", "회원가입이 완료되었습니다.", "id", id);
 	}
 
 	private Member getMemberByNameAndEmail(String name, String email) {

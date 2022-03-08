@@ -54,7 +54,7 @@ public class UsrMemberController {
 		
 			Member member = memberService.getMemberById(id);
 			
-			return ResultData.newData(joinRd, member); // newData 메소드 이용하여 joinRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 member로 넣어줌)
+			return ResultData.newData(joinRd, "member", member); // newData 메소드 이용하여 joinRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 member로 넣어줌)
 	}
 	
 	@RequestMapping("/usr/member/doLogin")
