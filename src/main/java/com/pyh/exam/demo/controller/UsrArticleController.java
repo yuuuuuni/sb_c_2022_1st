@@ -132,8 +132,9 @@ public class UsrArticleController {
 		// 수정 권한을 체크하는 것을 서비스한테 넘김
 		ResultData actorCanModifyRd = articleService.actorCanModify(loginedMemberId, article);
 		
+		// resultCode가 "S-"로 시작되지 않으면(즉, "F-"로 시작되면)
 		if(actorCanModifyRd.isFail()) {
-			return actorCanModifyRd;
+			return actorCanModifyRd; // 이 실패 보고서 자체를 리턴해라
 		}
 		
 		return articleService.modifyArticle(id, title, body); // 게시물 수정 메서드를 따로 만듦
