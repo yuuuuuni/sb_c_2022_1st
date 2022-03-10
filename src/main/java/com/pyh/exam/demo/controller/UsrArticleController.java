@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -53,12 +54,13 @@ public class UsrArticleController {
 		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌
 	}
 
-	@RequestMapping("/usr/article/getArticles")
-	@ResponseBody
-	public ResultData<List<Article>> getArticles() { // 리턴타입을 ResultData로 바꾸고
-		List<Article> articles = articleService.getArticles(); // 가져온 게시물들을 어레이리스트 articles라는 변수를 만들어 담아줌
+	@RequestMapping("/usr/article/list")
+	public String showList(Model model) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함 
+		List<Article> articles = articleService.getArticles();
 		
-		return ResultData.from("S-1", "게시물 리스트 입니다.", "articles", articles); // ResultData 포맷에 맞게 코드, 메세지, 데이터인 articles를 리턴
+		model.addAttribute("articles", articles); // 이름이 "articles"이고 값이 articles인 속성을 추가하겠다.
+		
+		return "usr/article/list";
 	}
 
 	@RequestMapping("/usr/article/getArticle")
