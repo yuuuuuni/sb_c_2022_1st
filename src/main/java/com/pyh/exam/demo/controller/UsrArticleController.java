@@ -22,6 +22,7 @@ public class UsrArticleController {
 
 	
 	// 액션 메서드 시작
+	// 게시물 작성
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public ResultData<Article> doAdd(HttpSession httpSession, String title, String body) {
@@ -53,7 +54,8 @@ public class UsrArticleController {
 
 		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌
 	}
-
+	
+	// 게시물들 조회(게시물들 리스팅)
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함 
 		List<Article> articles = articleService.getArticles();
@@ -62,7 +64,8 @@ public class UsrArticleController {
 		
 		return "usr/article/list";
 	}
-
+	
+	// 게시물(한 건) 조회
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
 	public ResultData<Article> getArticle(int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
@@ -74,7 +77,8 @@ public class UsrArticleController {
 
 		return ResultData.from("S-1", Ut.f("%d번 게시물 입니다.", id), "article", article);
 	}
-
+	
+	// 게시물 삭제
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public ResultData<Integer> doDelete(HttpSession httpSession, int id) {
@@ -107,7 +111,8 @@ public class UsrArticleController {
 
 		return ResultData.from("S-1", Ut.f("%d번 게시물을 삭제하였습니다.", id), "id", id);
 	}
-
+	
+	// 게시물 수정
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public ResultData<Article> doModify(HttpSession httpSession, int id, String title, String body) {		
