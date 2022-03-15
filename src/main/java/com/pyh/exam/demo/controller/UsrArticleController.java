@@ -19,7 +19,7 @@ import com.pyh.exam.demo.vo.ResultData;
 public class UsrArticleController {
 	@Autowired // 컴포넌트로 등록된 클래스(@Service, @Repository을 붙인 클래스)들은 new 쓰지 않고 @Autowired를 붙여 객체를 생성함
 	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 @Autowired를 붙여 ArticleService객체 생성
-
+	
 	
 	// 액션 메서드 시작
 	// 게시물 작성
@@ -48,9 +48,9 @@ public class UsrArticleController {
 		}
 		
 		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId, title, body); // 누가 글을 썼는지 알기 위해 loginedMemberId도 추가해줌. writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
-		int id = writeArticleRd.getData1(); // Data1에는 마지막에 생성된 게시물의 번호가 들어있음
+		int id = writeArticleRd.getData1(); // 마지막에 생성된 게시물을 가져오기 위해 해당 게시물의 번호부터 가져옴 (Data1에는 마지막에 생성된 게시물의 번호가 들어있기 때문)
 		
-		Article article = articleService.getArticle(id); // 마지막에 생성된 게시물의 번호에 해당하는 게시물을 가져와서 article에 담아라
+		Article article = articleService.getArticle(id); // 위에서 가져온 번호로 이 번호에 해당하는 게시물을 가져와서 article에 담아줌
 
 		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드를 이용하여 writeArticleRd에서는 resultCode와 msg만 필요하므로 writeArticleRd를 넘겨주고, data1Name과 data1을 각각 넘겨줌 (브라우저에 보여지는 최종 값은 성공/실패 코드, 메세지, 데이터이름, 데이터 이렇게 보여져야 하므로)
 	}
