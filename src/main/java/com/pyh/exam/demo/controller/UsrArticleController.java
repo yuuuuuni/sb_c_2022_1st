@@ -48,11 +48,11 @@ public class UsrArticleController {
 		}
 		
 		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId, title, body); // 누가 글을 썼는지 알기 위해 loginedMemberId도 추가해줌. writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
-		int id = writeArticleRd.getData1();
+		int id = writeArticleRd.getData1(); // Data1에는 마지막에 생성된 게시물의 번호가 들어있음
 		
-		Article article = articleService.getArticle(id); // 마지막에 추가된 게시물의 번호에 해당하는 게시물을 꺼내 article에 담아라
+		Article article = articleService.getArticle(id); // 마지막에 생성된 게시물의 번호에 해당하는 게시물을 가져와서 article에 담아라
 
-		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드 이용하여 writeArticleRd의 resultCode, msg는 그대로 가져가되 Data1 부분만 article로 넣어줌
+		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드를 이용하여 writeArticleRd에서는 resultCode와 msg만 필요하므로 writeArticleRd를 넘겨주고, data1Name과 data1을 각각 넘겨줌 (브라우저에 보여지는 최종 값은 성공/실패 코드, 메세지, 데이터이름, 데이터 이렇게 보여져야 하므로)
 	}
 	
 	// 게시물들 조회(게시물들 리스팅)
