@@ -55,7 +55,7 @@ public class UsrArticleController {
 		return ResultData.newData(writeArticleRd, "article", article); // newData 메소드를 이용하여 writeArticleRd에서는 resultCode와 msg만 필요하므로 writeArticleRd를 넘겨주고, data1Name과 data1을 각각 넘겨줌 (브라우저에 보여지는 최종 값은 성공/실패 코드, 메세지, 데이터이름, 데이터 이렇게 보여져야 하므로)
 	}
 	
-	// 게시물들 조회(게시물들 리스팅)
+	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함 
 		List<Article> articles = articleService.getArticles();
@@ -63,6 +63,16 @@ public class UsrArticleController {
 		model.addAttribute("articles", articles); // 이름이 "articles"이고 값이 articles인 속성을 추가하겠다.
 		
 		return "usr/article/list";
+	}
+	
+	// 게시물(한 건) 조회(게시물 상세페이지)
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(Model model, int id) {
+		Article article = articleService.getArticle(id);
+		
+		model.addAttribute("article", article);
+		
+		return "usr/article/detail";
 	}
 	
 	// 게시물(한 건) 조회
