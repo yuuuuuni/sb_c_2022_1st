@@ -9,7 +9,8 @@
     <div class="table-box-type-1">
       <table>
         <colgroup>
-          <col width="200" />
+          <col width="200" /> <!-- 컬럼(첫번째 열) -->
+          <col /> <!-- 데이터(두번째 열) 너비 줄 필요 없으면 이렇게 그냥 빈칸으로 놔둬도 됨 -->
         </colgroup>
         <tbody>
           <tr>
