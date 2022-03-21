@@ -30,7 +30,7 @@
               <td>${article.id}</td>
               <td>${article.regDate.substring(2, 16)}</td>
               <td>${article.updateDate.substring(2, 16)}</td>
-              <td>${article.memberId}</td>
+              <td>${article.extra__writerName}</td>
               <td>
                 <a class="hover:underline" href="../article/detail?id=${article.id}">${article.title}</a>
               </td>

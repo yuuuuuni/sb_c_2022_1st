@@ -14,4 +14,6 @@ public class Article {
 	private int memberId; // 회원번호 필드 추가
 	private String title;
 	private String body;
+	
+	private String extra__writerName;
 }

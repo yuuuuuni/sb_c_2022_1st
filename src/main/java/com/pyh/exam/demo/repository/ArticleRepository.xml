@@ -36,12 +36,6 @@
 		WHERE id = #{id}
 	</update>
 	
-	<select id="getArticles" resultType="Article"> <!-- 원래 리턴타입이 List<Article>인데 Mybatis는 알아서 인식해주기 때문에 List 안써도 됨 -->
-		SELECT *
-		FROM article
-		ORDER BY id DESC
-	</select>
-	
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
