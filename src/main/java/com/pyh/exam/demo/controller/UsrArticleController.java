@@ -118,7 +118,7 @@ public class UsrArticleController {
 	// 게시물 삭제
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData<Integer> doDelete(HttpSession httpSession, int id) {
+	public String doDelete(HttpSession httpSession, int id) {
 		boolean isLogined = false;
 		int loginedMemberId = 0;
 		
@@ -129,24 +129,24 @@ public class UsrArticleController {
 		}
 		
 		if(isLogined == false) { // 로그인이 안되어있으면
-			return ResultData.from("F-A", "로그인 후 이용해주세요.");
+			return Ut.jsHistoryBack("로그인 후 이용해주세요.");
 		}
 		
 		Article article = articleService.getForPrintArticle(loginedMemberId, id);
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
 		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
+			return Ut.jsHistoryBack(Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
 		
 		// 글 작성자의 번호와 로그인한 회원의 번호가 일치하는지 여부 (그 다음, 두번째로 확인)
 		if(article.getMemberId() != loginedMemberId) {
-			return ResultData.from("F-2", "삭제 권한이 없습니다.");
+			return Ut.jsHistoryBack("삭제 권한이 없습니다.");
 		}
 
 		articleService.deleteArticle(id); // 게시물 삭제 메서드를 따로 만듦
 
-		return ResultData.from("S-1", Ut.f("%d번 게시물을 삭제하였습니다.", id), "id", id);
+		return Ut.jsReplace(Ut.f("%d번 게시물을 삭제하였습니다.", id), "../article/list"); // 삭제했다는 알림창을 띄우고 이 uri로 이동해라
 	}
 	
 	// 게시물 수정
