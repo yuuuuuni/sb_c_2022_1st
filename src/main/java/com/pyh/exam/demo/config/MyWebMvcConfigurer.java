@@ -31,6 +31,7 @@ import com.pyh.exam.demo.interceptor.NeedLoginInterceptor;
 	                .excludePathPatterns("/resource/**") // 다만, resource/로 시작하는 모든 경로는 제외해라
 	                .excludePathPatterns("/error"); // error 보여주는 것도 제외해라
 	        
+	     // needLoginInterceptor 인터셉터 적용
 	        registry.addInterceptor(needLoginInterceptor)
             		.addPathPatterns("/usr/article/write") // 글 등록 페이지
             		.addPathPatterns("/usr/article/doWrite") // 글 등록을 처리해주는 페이지(눈에 안보임)
