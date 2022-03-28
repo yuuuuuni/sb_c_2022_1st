@@ -38,6 +38,7 @@ import com.pyh.exam.demo.interceptor.NeedLoginInterceptor;
             		.addPathPatterns("/usr/article/modify") // 글 수정 페이지
             		.addPathPatterns("/usr/article/doModify") // 글 수정을 처리해주는 페이지(눈에 안보임)
             		.addPathPatterns("/usr/article/doDelete"); // 글 삭제를 처리해주는 페이지(눈에 안보임)
+	        		
 		}
 	}
 

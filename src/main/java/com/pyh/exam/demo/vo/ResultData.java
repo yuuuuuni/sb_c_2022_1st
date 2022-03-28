@@ -12,10 +12,6 @@ public class ResultData<DT> {
 	@Getter
 	private DT data1; // 데이터
 	
-	private ResultData() { // private를 생성자로 하면 외부에서 객체 생성을 못함
-		// 외부에서 객체 생성을 못하게 하고 여기에서 객체 생성(ResultData rd = new ResultData();)을 하려고 이렇게 ResultData 클래스를 private 한 것 같음
-	}
-	
 	// 메소드 오버로딩 법칙 사용(data1이 안들어오는 경우)
 	public static ResultData from(String resultCode, String msg) {
 		return from(resultCode, msg, null, null); // data1이 없으므로 from 메소드 호출 시 들어가는 매개변수 자리에 맞춰 data1 자리에 null로 채워줘야함

@@ -29,12 +29,8 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public ResultData<Article> doAdd(HttpServletRequest req, String title, String body) { // Session 객체는 req를 통해서 얻을 수 있음
-		Rq rq = (Rq)req.getAttribute("rq"); // 인터셉터에서 만들어진 Rq객체 가져옴
+		Rq rq = (Rq)req.getAttribute("rq"); // 인터셉터에서 만들어진 Rq객체 가져옴. rq에는 isLogined의 상태(t 또는 f)와 loginedMemberId의 값이 들어있음
 		// req라는 카트에 Rq객체가 넣어져있으므로 getAttribute로 꺼내서 쓰면 됨
-		
-		if(rq.isLogined() == false) {
-			return ResultData.from("F-A", "로그인 후 이용해주세요.");
-		}
 		
 		if(Ut.empty(title)) {
 			return ResultData.from("F-1", "title(을)를 입력해주세요.");
@@ -97,10 +93,6 @@ public class UsrArticleController {
 	public String doDelete(HttpServletRequest req, int id) {
 		Rq rq = (Rq)req.getAttribute("rq");
 		
-		if(rq.isLogined() == false) { // 로그인이 안되어있으면
-			return Ut.jsHistoryBack("로그인 후 이용해주세요.");
-		}
-		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
@@ -123,10 +115,6 @@ public class UsrArticleController {
 	@ResponseBody
 	public ResultData<Article> doModify(HttpServletRequest req, int id, String title, String body) {		
 		Rq rq = (Rq)req.getAttribute("rq");
-		
-		if(rq.isLogined() == false) { // 로그인이 안되어있으면
-			return ResultData.from("F-A", "로그인 후 이용해주세요.");
-		}
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
