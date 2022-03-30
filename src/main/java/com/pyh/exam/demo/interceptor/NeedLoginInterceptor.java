@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.pyh.exam.demo.util.Ut;
 import com.pyh.exam.demo.vo.Rq;
 
-@Component // @Autowired 하려면 @Component 붙여줘야함
+@Component // @Autowired 하려면 @Component(@Service, @Mapper로도 대체가능) 붙여줘야함
 public class NeedLoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
