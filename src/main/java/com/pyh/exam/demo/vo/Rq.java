@@ -67,7 +67,10 @@ public class Rq {
 	}
 
 	public void login(Member member) {
-		session.setAttribute("loginedMemberId", member.getId());
-		
+		session.setAttribute("loginedMemberId", member.getId()); // session에 로그인된 회원번호를 꺼내서 'loginedMemberId'라는 이름으로 값을 넣어주겠다.
+	}
+
+	public void logout() {
+		session.removeAttribute("loginedMemberId"); // '로그인된 회원번호'라는 값을 삭제하겠다.
 	}
 }

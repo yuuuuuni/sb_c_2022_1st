@@ -60,7 +60,7 @@ public class UsrMemberController {
 	}
 	
 	@RequestMapping("/usr/member/login")
-	public String showLogin(HttpSession httpSession) {
+	public String showLogin() {
 		return "usr/member/login";
 	}
 	
@@ -102,19 +102,16 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public ResultData doLogout(HttpSession httpSession) {
-		boolean isLogined = false;
+	public ResultData doLogout(HttpServletRequest req) {
+		Rq rq = (Rq)req.getAttribute("rq");
 		
-		if(httpSession.getAttribute("loginedMemberId") == null) { // 이미 로그아웃 되어있는 상태이면
-			isLogined = true;
-		}
-		
-		if(isLogined) {
+		if(!rq.isLogined()) {
 			return ResultData.from("S-1", "이미 로그아웃 상태입니다.");
 		}
 		
+		// 여기서부터는 로그아웃 성공
 		
-		httpSession.removeAttribute("loginedMemberId"); // '로그인된 회원의 id'라는 속성을 삭제하겠다.
+		rq.logout();
 		
 		return ResultData.from("S-2", "로그아웃 되었습니다.");
 	}
