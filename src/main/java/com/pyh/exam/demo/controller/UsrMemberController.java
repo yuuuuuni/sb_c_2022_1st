@@ -1,5 +1,6 @@
 package com.pyh.exam.demo.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.pyh.exam.demo.service.MemberService;
 import com.pyh.exam.demo.util.Ut;
 import com.pyh.exam.demo.vo.Member;
 import com.pyh.exam.demo.vo.ResultData;
+import com.pyh.exam.demo.vo.Rq;
 
 @Controller
 public class UsrMemberController {
@@ -64,14 +66,10 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpSession httpSession, String loginId, String loginPw) { // HttpSession httpSession을 적어주면 알아서 session을 얻어와준다.
-		boolean isLogined = false;
+	public String doLogin(HttpServletRequest req, String loginId, String loginPw) { // rq를 적용시킬 것이므로 rq를 갖고 있는 req 먼저 받아와야함
+		Rq rq = (Rq)req.getAttribute("rq"); // req에서 rq 꺼내기
 		
-		if(httpSession.getAttribute("loginedMemberId") != null) { // 이미 로그인 되어있는 상태이면
-			isLogined = true;
-		}
-		
-		if(isLogined) {
+		if(rq.isLogined()) {
 			return Ut.jsHistoryBack("이미 로그인 된 상태입니다.");
 		}
 		
@@ -97,7 +95,7 @@ public class UsrMemberController {
 		
 		// 여기서부터는 로그인 성공
 		
-		httpSession.setAttribute("loginedMemberId", member.getId()); // 로그인된 회원의 id를 꺼내서 '로그인된 회원의 id'라고 이름을 지정하겠다.
+		rq.login(member); // session에서 직접 지정하지 말고 rq 적용시켜 rq로 불러오기
 		
 		return Ut.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/"); // 정상적으로 로그인이 되면 메인 페이지로 가도록 uri를 "/"로 지정
 	}

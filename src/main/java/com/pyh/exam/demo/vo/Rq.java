@@ -18,20 +18,21 @@ public class Rq {
 	
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
+	private HttpSession session;
 
 	public Rq(HttpServletRequest req, HttpServletResponse resp) { // 생성자
 		this.req = req;
 		this.resp = resp;
 		
-		HttpSession httpSession = req.getSession(); // req를 통해서 Session을 얻을 수 있음
+		this.session = req.getSession(); // req를 통해서 Session을 얻을 수 있음
 		
 		boolean isLogined = false; // 로그인을 안했다고 가정
 		int loginedMemberId = 0; // 로그인을 안했다고 가정
 		
 		// 로그인 했는지 체크
-		if(httpSession.getAttribute("loginedMemberId") != null) { // loginedMemberId 안에 로그인한 회원의 id가 들어있다는 뜻
+		if(session.getAttribute("loginedMemberId") != null) { // loginedMemberId 안에 로그인한 회원의 id가 들어있다는 뜻
 			isLogined = true; // 로그인한 상태로 하겠다
-			loginedMemberId = (int)httpSession.getAttribute("loginedMemberId");
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
 		}
 		
 		this.isLogined = isLogined; // isLogined의 값을 Rq한테 전달 (왜? Rq가 대신 일을 하려면 isLogined와 loginedMemberId의 최종값을 가지고 있어야하기 때문) 
@@ -62,6 +63,11 @@ public class Rq {
 	
 	public void println(String str) {
 		print(str + "\n");
+		
+	}
+
+	public void login(Member member) {
+		session.setAttribute("loginedMemberId", member.getId());
 		
 	}
 }
