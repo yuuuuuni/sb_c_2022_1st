@@ -42,15 +42,7 @@ public class Rq {
 	public void printHistoryBackJs(String msg) {
 		resp.setContentType("text/html; charset=UTF-8"); // 한글 안깨지도록 해줌
 		
-		println("<script>");
-		
-		if(!Ut.empty(msg)) {
-			println("alert('" + msg + "');");
-		}
-		
-		println("history.back();");
-		
-		println("</script>");
+		print(Ut.jsHistoryBack(msg));
 	}
 
 	public void print(String str) {
@@ -72,5 +64,11 @@ public class Rq {
 
 	public void logout() {
 		session.removeAttribute("loginedMemberId"); // '로그인된 회원번호'라는 값을 삭제하겠다.
+	}
+
+	public String historyBackJsOnView(String msg) {
+		req.setAttribute("historyBack", true);
+		req.setAttribute("msg", msg);
+		return "common/js";
 	}
 }

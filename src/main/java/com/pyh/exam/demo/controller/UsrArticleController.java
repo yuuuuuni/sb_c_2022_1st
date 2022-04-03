@@ -3,9 +3,7 @@ package com.pyh.exam.demo.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,6 +106,28 @@ public class UsrArticleController {
 		articleService.deleteArticle(id); // 게시물 삭제 메서드를 따로 만듦
 
 		return Ut.jsReplace(Ut.f("%d번 게시물을 삭제하였습니다.", id), "../article/list"); // 삭제했다는 알림창을 띄우고 이 uri로 이동해라
+	}
+	
+	@RequestMapping("/usr/article/modify")
+	public String showModify(HttpServletRequest req, int id) {
+		Rq rq = (Rq)req.getAttribute("rq");
+		
+		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 선택한 게시물 번호에 해당하는 게시물을 가져옴
+		
+		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
+		if (article == null) {
+			return rq.historyBackJsOnView(Ut.f("%d번 게시물이 존재하지 않습니다.", id));
+		}
+		
+		// 수정 권한을 체크하는 것을 서비스한테 넘김
+		ResultData actorCanModifyRd = articleService.actorCanModify(rq.getLoginedMemberId(), article);
+		
+		// resultCode가 "S-"로 시작되지 않으면(즉, "F-"로 시작되면)
+		if(actorCanModifyRd.isFail()) {
+			return rq.historyBackJsOnView(actorCanModifyRd.getMsg()); // 이 실패 보고서 자체를 리턴해라
+		}
+		
+		return "usr/article/modify";
 	}
 	
 	// 게시물 수정
