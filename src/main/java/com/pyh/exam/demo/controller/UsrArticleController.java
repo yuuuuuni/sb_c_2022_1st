@@ -110,7 +110,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/modify")
 	public String showModify(HttpServletRequest req, int id) {
-		Rq rq = (Rq)req.getAttribute("rq");
+		Rq rq = (Rq)req.getAttribute("rq"); // loginedMemberId 얻으려고 가져옴
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 선택한 게시물 번호에 해당하는 게시물을 가져옴
 		
@@ -143,7 +143,7 @@ public class UsrArticleController {
 			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
 		
-		// 수정 권한을 체크하는 것을 서비스한테 넘김
+		// 수정 권한을 체크하는 것을 서비스한테 넘김(로그인한 사람과 해당 게시물을 주고)
 		ResultData actorCanModifyRd = articleService.actorCanModify(rq.getLoginedMemberId(), article);
 		
 		// resultCode가 "S-"로 시작되지 않으면(즉, "F-"로 시작되면)
@@ -151,7 +151,7 @@ public class UsrArticleController {
 			return actorCanModifyRd; // 이 실패 보고서 자체를 리턴해라
 		}
 		
-		return articleService.modifyArticle(id, title, body); // 게시물 수정 메서드를 따로 만듦
+		return articleService.modifyArticle(id, title, body); // 드디어 다 통과됐으므로 수정 처리 메소드 서비스로 토스
 	}
 	// 액션 메서드 끝
 }

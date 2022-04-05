@@ -57,9 +57,9 @@ public class ArticleService {
 	}
 
 	public ResultData<Article> modifyArticle(int id, String title, String body) {
-		articleRepository.modifyArticle(id, title, body);
+		articleRepository.modifyArticle(id, title, body); // 게시물 수정 실행
 		
-		Article article = getForPrintArticle(0, id); // 0은 딱히 의미없음 여기서는 로그인한 사람이 필요없으므로 자리만 채워주기 위해 0 넣어준것
+		Article article = getForPrintArticle(0, id); // 수정된 게시물 가져옴 (0은 딱히 의미X. 여기서는 로그인한 사람이 필요없으므로 자리만 채워주기 위해 0 넣어줌)
 		
 		return ResultData.from("S-1", Ut.f("%d번 게시물이 수정되었습니다.", id), "article", article);
 	}
