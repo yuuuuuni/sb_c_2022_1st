@@ -109,7 +109,7 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, int id) {
+	public String showModify(HttpServletRequest req, Model model, int id) {
 		Rq rq = (Rq)req.getAttribute("rq"); // loginedMemberId 얻으려고 가져옴
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 선택한 게시물 번호에 해당하는 게시물을 가져옴
@@ -126,6 +126,8 @@ public class UsrArticleController {
 		if(actorCanModifyRd.isFail()) {
 			return rq.historyBackJsOnView(actorCanModifyRd.getMsg()); // 이 실패 보고서 자체를 리턴해라
 		}
+		
+		model.addAttribute("article", article);
 		
 		return "usr/article/modify";
 	}
