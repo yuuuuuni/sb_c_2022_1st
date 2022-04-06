@@ -50,6 +50,9 @@ public class ArticleService {
 		
 		ResultData actorCanDeleteRd = actorCanDelete(actorId, article); // actorId(로그인한 회원)가 해당 article을 삭제할 수 있는지의 여부를 판가름하여 그 결과값을 actorCanDeleteRd에 담음
 		article.setExtra__actorCanDelete(actorCanDeleteRd.isSuccess()); // isSuccess 메소드의 리턴값에 따라 extra__actorCanDelete에 true 또는 false가 들어감
+		
+		ResultData actorCanModifyRd = actorCanModify(actorId, article); // actorId(로그인한 회원)가 해당 article을 수정할 수 있는지의 여부를 판가름하여 그 결과값을 actorCanModifyRd에 담음
+		article.setExtra__actorCanModify(actorCanModifyRd.isSuccess()); // isSuccess 메소드의 리턴값에 따라 extra__actorCanModify에 true 또는 false가 들어감
 	}
 
 	public void deleteArticle(int id) {
