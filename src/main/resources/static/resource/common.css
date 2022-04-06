@@ -28,4 +28,9 @@ html > body {
   text-decoration: underline;
 }
 
+/* 커스텀 */
+body {
+  min-width: 800px;
+}
+
 
