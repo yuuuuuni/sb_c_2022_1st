@@ -112,7 +112,7 @@ public class UsrArticleController {
 	public String showModify(HttpServletRequest req, Model model, int id) {
 		Rq rq = (Rq)req.getAttribute("rq"); // loginedMemberId 얻으려고 가져옴
 		
-		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 선택한 게시물 번호에 해당하는 게시물을 가져옴
+		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 로그인한 회원번호와 id를 주고 그에 해당하는 게시물을 가져옴
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
 		if (article == null) {
@@ -127,7 +127,7 @@ public class UsrArticleController {
 			return rq.historyBackJsOnView(actorCanModifyRd.getMsg()); // 이 실패 보고서 자체를 리턴해라
 		}
 		
-		model.addAttribute("article", article);
+		model.addAttribute("article", article); // article의 정보를 구해놓은 상태에서 수정해야하므로
 		
 		return "usr/article/modify";
 	}
@@ -135,14 +135,14 @@ public class UsrArticleController {
 	// 게시물 수정
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData<Article> doModify(HttpServletRequest req, int id, String title, String body) {		
+	public String doModify(HttpServletRequest req, int id, String title, String body) {		
 		Rq rq = (Rq)req.getAttribute("rq");
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
 		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시물이 존재하지 않습니다.", id));
+			return Ut.jsHistoryBack(Ut.f("%d번 게시물이 존재하지 않습니다.", id));
 		}
 		
 		// 수정 권한을 체크하는 것을 서비스한테 넘김(로그인한 사람과 해당 게시물을 주고)
@@ -150,10 +150,12 @@ public class UsrArticleController {
 		
 		// resultCode가 "S-"로 시작되지 않으면(즉, "F-"로 시작되면)
 		if(actorCanModifyRd.isFail()) {
-			return actorCanModifyRd; // 이 실패 보고서 자체를 리턴해라
+			return Ut.jsHistoryBack(actorCanModifyRd.getMsg()); // 이 실패 보고서 안에 있는 메세지를 자바스크립트로 띄워야하므로 getMsg()
 		}
 		
-		return articleService.modifyArticle(id, title, body); // 드디어 다 통과됐으므로 수정 처리 메소드 서비스로 토스
+		articleService.modifyArticle(id, title, body); // 드디어 다 통과됐으므로 수정 처리 메소드 서비스로 토스
+		
+		return Ut.jsReplace(Ut.f("%d번 글이 수정되었습니다.", id), Ut.f("../article/detail?id=%d", id));
 	}
 	// 액션 메서드 끝
 }
