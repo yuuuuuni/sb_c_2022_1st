@@ -70,34 +70,34 @@ public class UsrMemberController {
 		Rq rq = (Rq)req.getAttribute("rq"); // req에서 rq 꺼내기
 		
 		if(rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그인 된 상태입니다.");
+			return rq.jsHistoryBack("이미 로그인 된 상태입니다.");
 		}
 		
 		if(Ut.empty(loginId)) {
-			return Ut.jsHistoryBack("loginId(을)를 입력해주세요.");
+			return rq.jsHistoryBack("loginId(을)를 입력해주세요.");
 		}
 		
 		if(Ut.empty(loginPw)) {
-			return Ut.jsHistoryBack("loginPw(을)를 입력해주세요.");
+			return rq.jsHistoryBack("loginPw(을)를 입력해주세요.");
 		}
 		
 		Member member = memberService.getMemberByLoginId(loginId); // member에는 db에 있는 정보가 담기는 것임
 		
 		// 브라우저에서 입력된 loginId에 대한 회원 정보가 없는 경우
 		if(member == null) {
-			return Ut.jsHistoryBack("존재하지 않는 로그인아이디 입니다.");
+			return rq.jsHistoryBack("존재하지 않는 로그인아이디 입니다.");
 		}
 		
 		// 입력된 loginId에 대한 회원 정보는 있지만 그 값(member)의 비밀번호가 브라우저에서 입력된 비밀번호(loginPw)와 같지 않은 경우
 		if(member.getLoginPw().equals(loginPw) == false) {
-			return Ut.jsHistoryBack("비밀번호가 일치하지 않습니다.");
+			return rq.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
 		// 여기서부터는 로그인 성공
 		
 		rq.login(member); // session에서 직접 지정하지 말고 rq 적용시켜 rq로 불러오기
 		
-		return Ut.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/"); // 정상적으로 로그인이 되면 메인 페이지로 가도록 uri를 "/"로 지정
+		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/"); // 정상적으로 로그인이 되면 메인 페이지로 가도록 uri를 "/"로 지정
 	}
 	
 	@RequestMapping("/usr/member/doLogout")
@@ -106,13 +106,13 @@ public class UsrMemberController {
 		Rq rq = (Rq)req.getAttribute("rq");
 		
 		if(!rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그아웃 상태입니다.");
+			return rq.jsHistoryBack("이미 로그아웃 상태입니다.");
 		}
 		
 		// 여기서부터는 로그아웃 성공
 		
 		rq.logout();
 		
-		return Ut.jsReplace("로그아웃 되었습니다.", "/");
+		return rq.jsReplace("로그아웃 되었습니다.", "/");
 	}
 }
