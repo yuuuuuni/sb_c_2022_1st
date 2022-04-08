@@ -11,26 +11,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pyh.exam.demo.service.ArticleService;
+import com.pyh.exam.demo.service.BoardService;
 import com.pyh.exam.demo.util.Ut;
 import com.pyh.exam.demo.vo.Article;
+import com.pyh.exam.demo.vo.Board;
 import com.pyh.exam.demo.vo.ResultData;
 import com.pyh.exam.demo.vo.Rq;
 
 @Controller
 public class UsrArticleController {
-	@Autowired // 컴포넌트로 등록된 클래스(@Service, @Mapper를 붙인 클래스)들은 new 쓰지 않고 @Autowired를 붙여 객체를 생성함
-	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 @Autowired를 붙여 ArticleService객체 생성
+	
+	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 ArticleService객체 생성하고 생성자로 넣어줌
+	private BoardService boardService; // 위와 같은 의미
+	
+	// 생성자 (@Autowired 해주는거랑 같은 의미 - @Autowired 빼고 생성자로 바꿔줌)
+	public UsrArticleController(ArticleService articleService, BoardService boardService) {
+		this.articleService = articleService;
+		this.boardService = boardService;
+	}
 	
 	
 	// 액션 메서드 시작	
 	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req, Model model) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함 
+	public String showList(HttpServletRequest req, Model model, int boardId) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
+		Board board = boardService.getBoardById(boardId);
+		
 		Rq rq = (Rq)req.getAttribute("rq");
 		
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId());
 		
+		model.addAttribute("board", board);
 		model.addAttribute("articles", articles); // 이름이 "articles"이고 값이 articles인 속성을 추가하겠다.
+		
 		
 		return "usr/article/list";
 	}
