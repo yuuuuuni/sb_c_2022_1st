@@ -43,10 +43,13 @@ public class UsrArticleController {
 			return rq.historyBackJsOnView(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
 		}
 		
+		int articlesCount = articleService.getArticlesCount(boardId);
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
 		
+		// JSP에서 쓰려면 이렇게 model.addAttribute로 등록을 해줘야 함. 그래야 JSP에서 ${~~}또는 ${~~.~}이런식으로 사용할 수 있음
 		model.addAttribute("board", board);
-		model.addAttribute("articles", articles); // 이름이 "articles"이고 값이 articles인 속성을 추가하겠다.
+		model.addAttribute("articlesCount", articlesCount);
+		model.addAttribute("articles", articles);
 		
 		
 		return "usr/article/list";

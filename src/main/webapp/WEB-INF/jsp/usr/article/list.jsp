@@ -6,6 +6,7 @@
 
 <section class="mt-5">
   <div class="container mx-auto px-3">
+    <div> 게시물 개수 : ${articlesCount}개 </div>
     <div class="table-box-type-1">
       <table>
         <colgroup> <!-- 테이블 각 컬럼의 너비를 정해주는 속성, table 태그 밑에다 씀 -->
