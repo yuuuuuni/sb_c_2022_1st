@@ -25,12 +25,17 @@ public interface ArticleRepository {
 	public void modifyArticle(@Param("id") int id, @Param("title") String title, @Param("body") String body);
 	
 	@Select("""
+			<script>
 			SELECT A.*, M.nickname AS extra__writerName
 			FROM article AS A LEFT JOIN member AS M
 			ON A.memberId = M.id
-			ORDER BY id DESC
+			<if test="boardId != 0">
+				WHERE A.boardId = #{boardId}
+			</if>
+			ORDER BY A.id DESC
+			</script>
 			""")
-	public List<Article> getForPrintArticles();
+	public List<Article> getForPrintArticles(@Param("boardId") int boardId);
 	
 	public int getLastInsertId();
 }

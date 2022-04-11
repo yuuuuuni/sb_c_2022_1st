@@ -43,7 +43,7 @@ public class UsrArticleController {
 			return rq.historyBackJsOnView(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
 		}
 		
-		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId());
+		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
 		
 		model.addAttribute("board", board);
 		model.addAttribute("articles", articles); // 이름이 "articles"이고 값이 articles인 속성을 추가하겠다.

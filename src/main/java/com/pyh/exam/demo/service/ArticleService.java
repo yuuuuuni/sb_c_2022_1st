@@ -24,9 +24,11 @@ public class ArticleService {
 		
 		return ResultData.from("S-1", Ut.f("%d번 게시물이 생성되었습니다.", id), "id", id); // 리턴타입을 ResultData 형식으로 바꿈
 	}
-
-	public List<Article> getForPrintArticles(int actorId) { // 출력용 게시물들을 얻음. 나중에 게시물을 작성한 회원과 로그인한 회원이 맞는지를 비교하기 위해 actorId를 매개변수로 받아줌
-		List<Article> articles = articleRepository.getForPrintArticles();
+	
+	// 출력용 게시물들을 얻음. 나중에 게시물을 작성한 회원과 로그인한 회원이 맞는지를 비교하기 위해 actorId를 매개변수로 받아줌
+	// boardId도 각각의 boardId에 해당하는 게시판만 화면에 보여주기 위해 매개변수로 받음
+	public List<Article> getForPrintArticles(int actorId, int boardId) {
+		List<Article> articles = articleRepository.getForPrintArticles(boardId);
 		
 		for(Article article : articles) {
 			updateForPrintData(actorId, article);
