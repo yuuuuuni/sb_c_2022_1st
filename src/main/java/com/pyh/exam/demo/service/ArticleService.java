@@ -43,7 +43,8 @@ public class ArticleService {
 		return article;
 	}
 
-	private void updateForPrintData(int actorId, Article article) { // 로그인한 사람과 해당 게시물을 받아서 article의 extra__actorCanDelete의 값을 true 또는 false로 갱신해주는 메소드
+	// 로그인한 사람과 해당 게시물을 받아서 article의 extra__actorCanDelete와 extra__actorCanModify의 값을 true 또는 false로 갱신해주는 메소드
+	private void updateForPrintData(int actorId, Article article) {
 		if(article == null) {
 			return;
 		}

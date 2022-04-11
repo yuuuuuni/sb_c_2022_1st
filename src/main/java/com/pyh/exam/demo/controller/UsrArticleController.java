@@ -31,13 +31,17 @@ public class UsrArticleController {
 	}
 	
 	
-	// 액션 메서드 시작	
+	// 액션 메서드 시작
 	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
 	public String showList(HttpServletRequest req, Model model, int boardId) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
+		Rq rq = (Rq)req.getAttribute("rq");
+		
 		Board board = boardService.getBoardById(boardId);
 		
-		Rq rq = (Rq)req.getAttribute("rq");
+		if(board == null) {
+			return rq.historyBackJsOnView(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
+		}
 		
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId());
 		
