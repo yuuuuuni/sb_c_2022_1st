@@ -29,8 +29,9 @@ public interface ArticleRepository {
 			SELECT A.*, M.nickname AS extra__writerName
 			FROM article AS A LEFT JOIN member AS M
 			ON A.memberId = M.id
+			WHERE 1
 			<if test="boardId != 0">
-				WHERE A.boardId = #{boardId}
+				AND A.boardId = #{boardId}
 			</if>
 			ORDER BY A.id DESC
 			</script>
@@ -43,8 +44,9 @@ public interface ArticleRepository {
 			<script>
 			SELECT COUNT(*) AS cnt
 			FROM article AS A
+			WHERE 1
 			<if test="boardId != 0">
-				WHERE A.boardId = #{boardId}
+				AND A.boardId = #{boardId}
 			</if>
 			</script>
 			""")
