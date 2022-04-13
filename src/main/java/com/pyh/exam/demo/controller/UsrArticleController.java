@@ -153,7 +153,7 @@ public class UsrArticleController {
 	// 게시물 작성
 		@RequestMapping("/usr/article/doWrite")
 		@ResponseBody
-		public String doWrite(String title, String body, String replaceUri) { // Session 객체는 req를 통해서 얻을 수 있음
+		public String doWrite(int boardId, String title, String body, String replaceUri) { // Session 객체는 req를 통해서 얻을 수 있음
 			if(Ut.empty(title)) {
 				return rq.jsHistoryBack("title(을)를 입력해주세요.");
 			} 
@@ -162,7 +162,7 @@ public class UsrArticleController {
 				return rq.jsHistoryBack("body(을)를 입력해주세요.");
 			}
 			
-			ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body); // 누가 글을 썼는지 알기 위해 loginedMemberId도 추가해줌. writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
+			ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body); // 누가 글을 썼는지 알기 위해 loginedMemberId도 추가해줌. writeArticleRd에 담고나서 아랫줄에서 int형으로 형변환하기 싫으므로 아예 받을 때 미리 <Integer> 타입으로 받겠다는 뜻으로 써줌(=제네릭) 그럼 형변환을 안해도 됨
 			int id = writeArticleRd.getData1(); // 마지막에 생성된 게시물을 가져오기 위해 해당 게시물의 번호부터 가져옴 (Data1에는 마지막에 생성된 게시물의 번호가 들어있기 때문)
 			
 			if(Ut.empty(replaceUri)) {
