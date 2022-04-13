@@ -6,11 +6,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import com.pyh.exam.demo.service.MemberService;
 import com.pyh.exam.demo.util.Ut;
 
 import lombok.Getter;
 
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) // value = "request"이라는 뜻은 객체가 싱글톤(객체가 하나만 존재)이 아니라 각 요청별 하나씩 존재해야한다는 뜻 
 public class Rq {
 	@Getter // @Getter를 달음으로써, isLogined() 메소드 생성됨 (Outline에서 확인 가능) 
 	private boolean isLogined;
@@ -43,6 +49,8 @@ public class Rq {
 		this.isLogined = isLogined; // isLogined의 값을 Rq한테 전달 (왜? Rq가 대신 일을 하려면 isLogined와 loginedMemberId의 최종값을 가지고 있어야하기 때문) 
 		this.loginedMemberId = loginedMemberId; // loginedMemberId의 값을 Rq한테 전달
 		this.loginedMember = loginedMember;
+		
+		this.req.setAttribute("rq", this);
 	}
 
 	public void printHistoryBackJs(String msg) {

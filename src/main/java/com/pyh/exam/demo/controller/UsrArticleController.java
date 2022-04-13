@@ -20,23 +20,22 @@ import com.pyh.exam.demo.vo.Rq;
 
 @Controller
 public class UsrArticleController {
-	
 	private ArticleService articleService; // UsrArticleController에서 ArticleService를 써야하므로 ArticleService객체 생성하고 생성자로 넣어줌
 	private BoardService boardService; // 위와 같은 의미
+	private Rq rq;
 	
 	// 생성자 (@Autowired 해주는거랑 같은 의미 - @Autowired 빼고 생성자로 바꿔줌)
-	public UsrArticleController(ArticleService articleService, BoardService boardService) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.rq = rq;
 	}
 	
 	
 	// 액션 메서드 시작
 	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req, Model model, int boardId) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public String showList(Model model, int boardId) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
 		Board board = boardService.getBoardById(boardId);
 		
 		if(board == null) {
@@ -57,9 +56,7 @@ public class UsrArticleController {
 	
 	// 게시물(한 건) 조회(게시물 상세페이지)
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpServletRequest req, Model model, int id) {
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public String showDetail(Model model, int id) {
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		model.addAttribute("article", article);
@@ -70,9 +67,7 @@ public class UsrArticleController {
 	// 게시물(한 건) 조회
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public ResultData<Article> getArticle(HttpServletRequest req, int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public ResultData<Article> getArticle(int id) { // 리저트코드, 메세지, 데이터 등을 더욱 세부적으로 나타내기 위해 리턴타입을 ResultData로 바꿔줌
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
 		if (article == null) {
@@ -85,9 +80,7 @@ public class UsrArticleController {
 	// 게시물 삭제
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req, int id) {
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public String doDelete(int id) {
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
@@ -106,9 +99,7 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, Model model, int id) {
-		Rq rq = (Rq)req.getAttribute("rq"); // loginedMemberId 얻으려고 가져옴
-		
+	public String showModify(Model model, int id) {
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id); // 로그인한 회원번호와 id를 주고 그에 해당하는 게시물을 가져옴
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
@@ -132,9 +123,7 @@ public class UsrArticleController {
 	// 게시물 수정
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {		
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public String doModify(int id, String title, String body) {		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		// 가져온 게시물이 비어있는 경우 (첫번째로, 비어있는지 부터 확인)
@@ -164,10 +153,7 @@ public class UsrArticleController {
 	// 게시물 작성
 		@RequestMapping("/usr/article/doWrite")
 		@ResponseBody
-		public String doWrite(HttpServletRequest req, String title, String body, String replaceUri) { // Session 객체는 req를 통해서 얻을 수 있음
-			Rq rq = (Rq)req.getAttribute("rq"); // 인터셉터에서 만들어진 Rq객체 가져옴. rq에는 isLogined의 상태(t 또는 f)와 loginedMemberId의 값이 들어있음
-			// req라는 카트에 Rq객체가 넣어져있으므로 getAttribute로 꺼내서 쓰면 됨
-			
+		public String doWrite(String title, String body, String replaceUri) { // Session 객체는 req를 통해서 얻을 수 있음
 			if(Ut.empty(title)) {
 				return rq.jsHistoryBack("title(을)를 입력해주세요.");
 			} 

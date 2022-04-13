@@ -16,8 +16,13 @@ import com.pyh.exam.demo.vo.Rq;
 
 @Controller
 public class UsrMemberController {
-	@Autowired
 	private MemberService memberService;
+	private Rq rq;
+	
+	public UsrMemberController(MemberService memberService, Rq rq) {
+		this.memberService = memberService;
+		this.rq = rq;
+	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
@@ -66,9 +71,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) { // rq를 적용시킬 것이므로 rq를 갖고 있는 req 먼저 받아와야함
-		Rq rq = (Rq)req.getAttribute("rq"); // req에서 rq 꺼내기
-		
+	public String doLogin(String loginId, String loginPw) { // rq를 적용시킬 것이므로 rq를 갖고 있는 req 먼저 받아와야함
 		if(rq.isLogined()) {
 			return rq.jsHistoryBack("이미 로그인 된 상태입니다.");
 		}
@@ -102,9 +105,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
-		Rq rq = (Rq)req.getAttribute("rq");
-		
+	public String doLogout() {
 		if(!rq.isLogined()) {
 			return rq.jsHistoryBack("이미 로그아웃 상태입니다.");
 		}
