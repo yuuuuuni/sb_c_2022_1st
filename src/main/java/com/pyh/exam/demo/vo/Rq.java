@@ -99,6 +99,5 @@ public class Rq {
 	// 편의를 위해 BeforeActionInterceptor 에서 꼭 호출해줘야 한다.
 	public void initOnBeforeActionInterceptor() {
 		
-		
 	}
 }

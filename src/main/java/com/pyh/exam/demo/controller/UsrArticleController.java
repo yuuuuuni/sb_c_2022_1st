@@ -29,6 +29,9 @@ public class UsrArticleController {
 		this.articleService = articleService;
 		this.boardService = boardService;
 		this.rq = rq;
+		// 원래는 요청이 3번 있으면 Rq도 3개 있어야 하는데,
+		// Rq는 하나만 만들어지기 때문에 Rq가 대리자 처럼 행동해야함
+		// => 그렇게 하려면 Rq 클래스에 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) 달아줘야함
 	}
 	
 	
