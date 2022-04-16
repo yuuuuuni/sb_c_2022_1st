@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pyh.exam.demo.service.ArticleService;
@@ -31,14 +31,14 @@ public class UsrArticleController {
 		this.rq = rq;
 		// 원래는 요청이 3번 있으면 Rq도 3개 있어야 하는데,
 		// Rq는 하나만 만들어지기 때문에 Rq가 대리자 처럼 행동해야함
-		// => 그렇게 하려면 Rq 클래스에 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) 달아줘야함
+		// => 그렇게 하려면 Rq 클 래스에 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS) 달아줘야함
 	}
 	
 	
 	// 액션 메서드 시작
 	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model, int boardId) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
+	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, @RequestParam(defaultValue = "1") int page) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
 		Board board = boardService.getBoardById(boardId);
 		
 		if(board == null) {
@@ -46,7 +46,9 @@ public class UsrArticleController {
 		}
 		
 		int articlesCount = articleService.getArticlesCount(boardId);
-		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
+		
+		int itemsCountInAPage = 10; // 한 페이지당 게시물을 10개까지 보여주겠다.
+		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, itemsCountInAPage, page); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
 		
 		// JSP에서 쓰려면 이렇게 model.addAttribute로 등록을 해줘야 함. 그래야 JSP에서 ${~~}또는 ${~~.~}이런식으로 사용할 수 있음
 		model.addAttribute("board", board);
