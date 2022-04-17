@@ -33,7 +33,7 @@ public class ArticleService {
 		FROM article
 		WHERE boardId = 1
 		ORDER BY id DESC
-		LIMIT 0, 10
+		LIMIT 0, 10 // 0번 인덱스는 1번 게시물이므로 1번부터 10개 게시물 보여주라는 뜻(1~10)
 		 */
 		
 		int limitStart = (page - 1) * itemsCountInAPage;

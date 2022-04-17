@@ -6,15 +6,21 @@
 
 <section class="mt-5">
   <div class="container mx-auto px-3">
-    <div> 게시물 개수 : ${articlesCount}개 </div>
+    <div>게시물 개수 : ${articlesCount}개</div>
     <div class="table-box-type-1">
       <table>
-        <colgroup> <!-- 테이블 각 컬럼의 너비를 정해주는 속성, table 태그 밑에다 씀 -->
-          <col width="50" /> <!-- 번호 -->
-          <col width="150" /> <!-- 작성날짜 -->
-          <col width="150" /> <!-- 수정날짜 -->
-          <col width="150" /> <!-- 작성자 -->
-          <col /> <!-- 제목은 너비 조정 필요 없으므로 그냥 놔둬도 됨 -->
+        <colgroup>
+          <!-- 테이블 각 컬럼의 너비를 정해주는 속성, table 태그 밑에다 씀 -->
+          <col width="50" />
+          <!-- 번호 -->
+          <col width="150" />
+          <!-- 작성날짜 -->
+          <col width="150" />
+          <!-- 수정날짜 -->
+          <col width="150" />
+          <!-- 작성자 -->
+          <col />
+          <!-- 제목은 너비 조정 필요 없으므로 그냥 놔둬도 됨 -->
         </colgroup>
         <thead>
           <tr>
@@ -40,6 +46,15 @@
         </tbody>
       </table>
     </div>
+
+    <div class="page-menu mt-3">
+      <div class="btn-group justify-center">
+        <c:forEach begin="1" end="20" var="i">
+          <a class="btn btn-sm ${param.page == i ? 'btn-active' : ''}" href="?page=${i}">${i}</a>
+        </c:forEach>
+      </div>
+    </div>
+
   </div>
 </section>
 
