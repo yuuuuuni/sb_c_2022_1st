@@ -38,14 +38,14 @@ public class UsrArticleController {
 	// 액션 메서드 시작
 	// 게시물들 조회(게시물 리스트 페이지)
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, @RequestParam(defaultValue = "1") int page) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
+	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId, @RequestParam(defaultValue = "title,body") String searchKeywordTypeCode, @RequestParam(defaultValue = "") String searchKeyword, @RequestParam(defaultValue = "1") int page) { // JSP를 사용하려면 리턴타입을 String으로 바꾸고 @ResponseBody는 지워줘야함
 		Board board = boardService.getBoardById(boardId);
 		
 		if(board == null) {
 			return rq.historyBackJsOnView(Ut.f("%d번 게시판은 존재하지 않습니다.", boardId));
 		}
 		
-		int articlesCount = articleService.getArticlesCount(boardId); // 게시판당 게시물 총 개수
+		int articlesCount = articleService.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword); // 게시판당 게시물 총 개수
 		
 		int itemsCountInAPage = 10; // 한 페이지당 게시물을 10개까지 보여주겠다.
 		int pagesCount = (int)Math.ceil((double)articlesCount / itemsCountInAPage); // 페이지 수 = 게시판당 게시물 총 개수 / 한 페이지당 게시물 개수(10개)
