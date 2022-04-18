@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html>
+<!-- 데이지UI에서 명시적으로 다크모드가 활성화 되지 않도록 라이트 모드로 설정 -->
+<html lang="ko" class="light" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <title>${pageTitle}</title>
