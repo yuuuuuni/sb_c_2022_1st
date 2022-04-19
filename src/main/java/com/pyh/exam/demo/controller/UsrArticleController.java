@@ -49,7 +49,7 @@ public class UsrArticleController {
 		
 		int itemsCountInAPage = 10; // 한 페이지당 게시물을 10개까지 보여주겠다.
 		int pagesCount = (int)Math.ceil((double)articlesCount / itemsCountInAPage); // 페이지 수 = 게시판당 게시물 총 개수 / 한 페이지당 게시물 개수(10개)
-		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, itemsCountInAPage, page); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
+		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, searchKeywordTypeCode, searchKeyword, itemsCountInAPage, page); // boardId에 따라 각각의 boardId에 해당하는 게시판만 보여주기 위해 인자로 넣어줌
 		
 		// JSP에서 쓰려면 이렇게 model.addAttribute로 등록을 해줘야 함. 그래야 JSP에서 ${~~}또는 ${~~.~}이런식으로 사용할 수 있음
 		model.addAttribute("boardId", boardId);

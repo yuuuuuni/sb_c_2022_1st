@@ -27,7 +27,7 @@ public class ArticleService {
 	
 	// 출력용 게시물들을 얻음. 나중에 게시물을 작성한 회원과 로그인한 회원이 맞는지를 비교하기 위해 actorId를 매개변수로 받아줌
 	// boardId도 각각의 boardId에 해당하는 게시판만 화면에 보여주기 위해 매개변수로 받음
-	public List<Article> getForPrintArticles(int actorId, int boardId, int itemsCountInAPage, int page) {
+	public List<Article> getForPrintArticles(int actorId, int boardId, String searchKeywordTypeCode, String searchKeyword, int itemsCountInAPage, int page) {
 		/*
 		SELECT *
 		FROM article
@@ -39,7 +39,7 @@ public class ArticleService {
 		int limitStart = (page - 1) * itemsCountInAPage;
 		int limitTake = itemsCountInAPage;
 		
-		List<Article> articles = articleRepository.getForPrintArticles(boardId, limitStart, limitTake);
+		List<Article> articles = articleRepository.getForPrintArticles(boardId, searchKeywordTypeCode, searchKeyword, limitStart, limitTake);
 		
 		for(Article article : articles) {
 			updateForPrintData(actorId, article);
