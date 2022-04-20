@@ -7,8 +7,8 @@
 <section class="mt-5">
   <div class="container mx-auto px-3">
     <div>게시물 개수 : ${articlesCount}개</div>
-    <div class="table-box-type-1">
-      <table>
+    <div class="mt-3">
+      <table class="table table-fixed w-full">
         <colgroup> <!-- 테이블 각 컬럼의 너비를 정해주는 속성, table 태그 밑에다 씀 -->
           <col width="50" /> <!-- 번호 -->
           <col width="150" /> <!-- 작성날짜 -->
@@ -33,7 +33,7 @@
               <td>${article.updateDate.substring(2, 16)}</td>
               <td>${article.extra__writerName}</td>
               <td>
-                <a class="btn-text-link" href="../article/detail?id=${article.id}">${article.title}</a>
+                <a class="btn-text-link block w-full truncate" href="../article/detail?id=${article.id}">${article.title}</a>
               </td>
             </tr>
           </c:forEach>
