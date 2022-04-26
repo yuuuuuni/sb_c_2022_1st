@@ -14,6 +14,7 @@ public class Article {
 	private int memberId; // 회원번호 필드 추가
 	private String title;
 	private String body;
+	private int hitCount;
 	
 	private String extra__writerName;
 	private boolean extra__actorCanDelete;

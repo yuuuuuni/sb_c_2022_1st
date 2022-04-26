@@ -135,3 +135,7 @@ insert into article
 select now(), now(), FLOOR(RAND() * 2) + 1, FLOOR(RAND() * 2) + 1, concat('제목_', rand()), concat('내용_', rand())
 from article;
 */
+
+# 게시물(Article) 테이블에 hitCount 칼럼을 추가
+ALTER TABLE article
+ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0;

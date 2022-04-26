@@ -66,6 +66,13 @@ public class UsrArticleController {
 	// 게시물(한 건) 조회(게시물 상세페이지)
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(Model model, int id) {
+		
+		ResultData<Integer> increaseHitCountRd = articleService.increaseHitCount(id);
+		
+		if(increaseHitCountRd.isFail()) {
+			return rq.historyBackJsOnView(increaseHitCountRd.getMsg());
+		}
+		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		
 		model.addAttribute("article", article);

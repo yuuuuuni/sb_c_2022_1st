@@ -1,7 +1,9 @@
 package com.pyh.exam.demo.vo;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString // 객체 위치의 내용을 알려줌
 public class ResultData<DT> {
 	@Getter // 자동으로 Getter 메소드를 생성해줌 (예를 들어, name라는 필드에 선언하면 자동으로 getName() 메소드를 생성해줌)
 	private String resultCode; // 성공&실패의 값을 나타내는 코드
